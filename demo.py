@@ -42,7 +42,10 @@ def main(args):
         guidance_scale = args.guidance_scale,
         eta = args.eta
     )
-    cv2.imwrite(args.output, image)
+    os.makedirs(args.outdir, exist_ok=True)
+    output_file = len(os.listdir(args.outdir))
+    output_path = os.path.join(args.outdir, f"{output_file:05}.png")
+    cv2.imwrite(output_path, image)
 
 
 if __name__ == "__main__":
@@ -68,7 +71,7 @@ if __name__ == "__main__":
     parser.add_argument("--strength", type=float, default=0.5, help="how strong the initial image should be noised [0.0, 1.0]")
     # inpainting
     parser.add_argument("--mask", type=str, default=None, help="mask of the region to inpaint on the initial image")
-    # output name
-    parser.add_argument("--output", type=str, default="output.png", help="output image name")
+    # outdir name
+    parser.add_argument("--outdir", type=str, default="output", help="output dir name")
     args = parser.parse_args()
     main(args)
